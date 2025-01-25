@@ -1,0 +1,19 @@
+{
+  "name": "salvage-n-sustain",
+  "version": "1.0.0",
+  "description": "Posting board for eco-friendly initiatives and events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && npm start",
+    "server": "cd server && nodemon server.js",
+    "dev": "concurrently \"npm run client\" \"npm run server\"",
+    "build": "cd client && npm run build" 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
