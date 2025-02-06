@@ -67,6 +67,7 @@ export function SignUpPage({nextPage}) {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
     const [name, setName] = useState(''); 
+    const [errorMsg, setErrorMsg] = useState(''); 
     const [confirmPass, setConfirmPass] = useState('');
     const [accountType, setAccountType] = useState(''); 
     const accountTypes = {
@@ -81,6 +82,13 @@ export function SignUpPage({nextPage}) {
     const signUpUser = async (event) => {
         event.preventDefault(); 
         console.log("attempting to sign up"); 
+        if (password != confirmPass) {
+            console.error("Passwords don't match"); 
+            setErrorMsg("Passwords don't match"); 
+            return; 
+        } else {
+            setErrorMsg(''); 
+        }
         const { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
@@ -91,6 +99,12 @@ export function SignUpPage({nextPage}) {
                 }
             }
         });
+        if (error != null) {
+            console.error(error); 
+            setErrorMsg(error.message); 
+        } else {
+            setErrorMsg(''); 
+        }
         // TODO - delete after developed 
         console.log(data); 
         console.log(error); 
@@ -99,40 +113,42 @@ export function SignUpPage({nextPage}) {
     return (
         <div> 
             <h1>Sign Up</h1>
-            <div className="inputBlock"></div>
-            <form onSubmit={signUpUser}>
-                <input 
-                    type="text"
-                    placeholder="Email ex. email@gmail.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}>    
-                </input><br></br>
-                <input 
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}>    
-                </input><br></br>
-                <input 
-                    type="password"
-                    placeholder="Confirm Password"
-                    value={confirmPass}
-                    onChange={(e) => setConfirmPass(e.target.value)}>    
-                </input><br></br>
-                <select 
-                    value={accountType} 
-                    onChange={(e) => {setAccountType(e.target.value)}}>
-                    <option>Select account type</option>
-                    {Object.entries(accountTypes).map(([key, value]) => <option key={value}>{value}</option>)}
-                </select> <br></br>
-                <input 
-                    type="text"
-                    placeholder= {((accountType === accountTypes.ORGANIZATION )? accountType : "Full") + " Name"}  
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}>    
-                </input><br></br>
-                <button type="submit">Sign Up</button>
-            </form>
+            <div className="inputBlock">
+                <form onSubmit={signUpUser}>
+                    <p className="errorMessage">{errorMsg}</p>
+                    <input 
+                        type="text"
+                        placeholder="Email ex. email@gmail.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}>    
+                    </input><br></br>
+                    <input 
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}>    
+                    </input><br></br>
+                    <input 
+                        type="password"
+                        placeholder="Confirm Password"
+                        value={confirmPass}
+                        onChange={(e) => setConfirmPass(e.target.value)}>    
+                    </input><br></br>
+                    <select 
+                        value={accountType} 
+                        onChange={(e) => {setAccountType(e.target.value)}}>
+                        <option>Select account type</option>
+                        {Object.entries(accountTypes).map(([key, value]) => <option key={value}>{value}</option>)}
+                    </select> <br></br>
+                    <input 
+                        type="text"
+                        placeholder= {((accountType === accountTypes.ORGANIZATION )? accountType : "Full") + " Name"}  
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}>    
+                    </input><br></br>
+                    <button type="submit">Sign Up</button>
+                </form>
+            </div>
         </div>
     ); 
 }
