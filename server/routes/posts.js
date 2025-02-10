@@ -1,7 +1,9 @@
+require('dotenv').config(); 
+const { createClient } = require('@supabase/supabase-js'); 
 const express = require('express');
 const router = express.Router();
 const protectedRouter = express.Router(); 
-const supabase = require('../data/supabaseClient'); // Import the client
+const supabase = require('../data/supabaseClient'); 
 
 /**
  *  @swagger
@@ -102,11 +104,11 @@ protectedRouter.use(errorMiddleware);
  *                      description: post user wants to post
  *      responseBody: 
  *          content: 
- *              application/json
+ *              application/json    
  *              schema: 
- *                  data: 
- *                      type: application/json 
- *                         description: successfully added row              
+ *                  post: 
+ *                      type: $ref:'#/components/schemas/Post' 
+ *                      description: content of created post                  
  *      responses:
  *          201:
  *              description: Post created successfully
@@ -121,11 +123,19 @@ protectedRouter.use(errorMiddleware);
  */
 protectedRouter.post('/create', logger, authMiddleware, errorMiddleware, async (req, res, next) => {
 
+    const supabaseURL = process.env.REACT_APP_SUPABASE_URL;
+    const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY; 
+    let supabaseUser = await createClient(supabaseURL, supabaseAnonKey, {
+        auth: {
+            token: req.body.data.session.access_token
+        }
+    }); 
+
     let image_url = '';  
     if (req.body.image_url != null) image_url = req.body.image_url; 
 
     // inserts post into table
-    const { data , error } = await supabase
+    const { data , error } = await supabaseUser
         .from('posts')
         .insert([
             {
