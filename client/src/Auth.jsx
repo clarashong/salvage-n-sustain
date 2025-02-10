@@ -21,14 +21,19 @@ export function LoginPage({nextPage}) {
      */
     const loginUser = async (event) => {
         event.preventDefault();
-        const { user, session, error } = await supabase.auth.signInWithPassword({
-            email: email, 
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
             password: password
         }); 
         // TODO - delete after developed 
-        console.log(user); 
-        console.log(session); 
+        console.log(data); 
         console.log(error); 
+    }
+
+    const signOutUser = async (event) => {
+        console.log("signing out"); // TODO - delete after dev
+        event.preventDefault();
+        const { error } = await supabase.auth.signOut(); 
     }
 
     return (
@@ -50,6 +55,7 @@ export function LoginPage({nextPage}) {
                     >    
                     </input><br></br>
                     <button type="submit">Login</button>
+                    <button onClick={signOutUser}>Sign Out</button>
                 </form>
             </div>
         </div>
