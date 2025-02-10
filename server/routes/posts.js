@@ -56,14 +56,15 @@ const logger = (req, res, next) => {
 
 const authMiddleware = async (req, res, next) => {
     // check if user is logged in and whether session is correct - return 401 otherwise
-    console.log(req.body); 
-    const token = req.body.data.session.access_token; 
+    const token = req.headers.authorization.split(' ')[1]; 
     const { data: { user }, error } = await supabase.auth.getUser(token);
     // no error found, the session matches a current session in supabase 
-    if (!error && req.body.data.session.user.email == user.email) {
+    // user is authenticated
+    if (!error) {
+        req.body.post.user_id = user.id; 
         next(); // move on
+        return; 
     } 
-
     res.status(401)
     .json({
         error: {
@@ -96,9 +97,6 @@ protectedRouter.use(errorMiddleware);
  *          content:
  *              application/json:
  *              schema:
- *                  data: 
- *                      type: application/json 
- *                      description: data from get user session for authentication before posting 
  *                  post: 
  *                      type: $ref:'#/components/schemas/Post' 
  *                      description: post user wants to post
@@ -123,11 +121,11 @@ protectedRouter.use(errorMiddleware);
  */
 protectedRouter.post('/create', logger, authMiddleware, errorMiddleware, async (req, res, next) => {
 
-    const supabaseURL = process.env.REACT_APP_SUPABASE_URL;
-    const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY; 
-    let supabaseUser = await createClient(supabaseURL, supabaseAnonKey, {
+    const supabaseURL = process.env.SUPABASE_URL; 
+    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+    let supabaseUser = createClient(supabaseURL, supabaseAnonKey, {
         auth: {
-            token: req.body.data.session.access_token
+            token: req.headers.authorization.split(' ')[1]
         }
     }); 
 
@@ -149,8 +147,8 @@ protectedRouter.post('/create', logger, authMiddleware, errorMiddleware, async (
                 image_url: image_url
             }])
         .select(); 
-
     // error from supabase 
+    console.log(error); 
     if (error != null) {
         const newError = new Error(error.message); 
         newError.status = 400; 
