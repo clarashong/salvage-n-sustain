@@ -83,7 +83,7 @@ export function SignUpPage({nextPage}) {
     
     /**
      * Attempt to sign up the user 
-     * @returns {object|void} either returns an error message, or does nothing and redirects to next page 
+     * @returns {void} either returns an error message, or does nothing and redirects to next page 
      */
     const signUpUser = async (event) => {
         event.preventDefault(); 
