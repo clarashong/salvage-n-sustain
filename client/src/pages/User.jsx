@@ -1,5 +1,5 @@
-import './index.css';
-import supabase from './data/supabaseClient' 
+import '../styles/index.css';
+import supabase from '../data/supabaseClient' 
 import { useState } from 'react';
 
 /** A form to create a post
