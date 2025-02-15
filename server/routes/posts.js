@@ -86,92 +86,88 @@ const errorMiddleware = (err, req, res, next) => {
 
 protectedRouter.use(express.json()); 
 protectedRouter.use(errorMiddleware); 
+router.use(express.json()); 
+router.use(errorMiddleware); 
 
 /**
  * @swagger
- * /create:
- *      post:
- *      summary: Create a new post
- *      requestBody:
- *          required: true
- *          content:
- *              application/json:
- *              schema:
- *                  post: 
- *                      type: $ref:'#/components/schemas/Post' 
- *                      description: post user wants to post
- *      responseBody: 
- *          content: 
- *              application/json    
- *              schema: 
- *                  post: 
- *                      type: $ref:'#/components/schemas/Post' 
- *                      description: content of created post                  
- *      responses:
- *          201:
- *              description: Post created successfully
- *              content:
- *              application/json:
- *                  schema:
- *                      $ref: '#/components/schemas/Post' 
- *          400:
- *              description: Bad request - improper data 
- *          401: 
- *              description: Unauthorized - not authenticated/logged in 
+ * /api/posts:
+ *   get:
+ *     summary: Get all posts with optional filtering
+ *     tags: [Posts]
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search term for filtering posts
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           default: 1
+ *         description: Page number for pagination
+ *     responses:
+ *       200:
+ *         description: List of posts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Post'
+ *                 page:
+ *                   type: integer
+ *                 limit:
+ *                   type: integer
+ *                 total:
+ *                   type: integer
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
  */
-protectedRouter.post('/create', logger, authMiddleware, errorMiddleware, async (req, res, next) => {
+router.get('/search', logger, errorMiddleware, async (req, res, next) => {
+    const {
+        search,
+        page
+    } = req.query; 
 
-    const supabaseURL = process.env.SUPABASE_URL; 
-    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-    const token = req.headers.authorization.split(' ')[1]; 
-    const refresh = req.headers.authorization.split(' ')[1]; 
-    let supabaseUser = createClient(supabaseURL, supabaseAnonKey, {auth: {token: token}}); 
-    await supabaseUser.auth.setSession(token, refresh); 
-    console.log('Token: ' + supabaseUser.auth.token); 
-
-    let image_url = '';  
-    if (req.body.image_url != null) image_url = req.body.image_url; 
-
-    const { data: { user }, userError } = await supabaseUser.auth.getUser(token);
-    if (userError) {
-        console.error("User authentication error:", userError);
-        return res.status(401).json({ error: userError.message }); 
+    if (!search) {
+        // select all posts 
+        const {data:posts, error} = await supabase
+            .from('posts')
+            .select('id, title,description,items,start_date,end_date,location,image_url,user_name'); 
+        if (error) {
+            const newError = new Error(error.message); 
+            newError.status = 400; 
+            next(newError); 
+            return;
+        } 
+        res.status(201).json(posts);
+    } else {
+        const {data:posts, error} = await supabase
+            .rpc('get_items_search', {items_param: search}); 
+        if (error) {
+            const newError = new Error(error.message); 
+            newError.status = 400; 
+            next(newError); 
+            return;
+        }
+        res.status(201).json(posts);
     }
+}); 
 
-    console.log(req.body); 
-    //inserts post into table
-    // const { data , error } = await supabaseUser
-    //     .from('posts')
-    //     .insert(
-    //         [{
-    //             title: req.body.post.title,
-    //             description: req.body.post.description, 
-    //             user_id: user.id,
-    //             items: req.body.post.items, 
-    //             start_date: new Date(req.body.post.start_date), 
-    //             end_date: new Date(req.body.post.end_date), 
-    //             location: req.body.post.location,
-    //             image_url: image_url
-    //         }]); 
-
-    const { data , error } = await supabaseUser
-    .from('posts')
-    .insert(
-        {
-            title: req.body.post.title
-        }); 
-
-    console.log("Data: " + data); 
-    console.log(error); 
-    if (error != null) {
-        const newError = new Error(error.message); 
-        newError.status = 400; 
-        next(newError); 
-        return;
-    } 
-
-    // no error
-    res.status(201).json(data); // return posted data
-})
-
-module.exports = protectedRouter; 
+module.exports = router; 
