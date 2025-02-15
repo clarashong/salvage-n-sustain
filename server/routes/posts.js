@@ -60,7 +60,7 @@ const authMiddleware = async (req, res, next) => {
     const { data: { user }, error } = await supabase.auth.getUser(token);
     // no error found, the session matches a current session in supabase 
     // user is authenticated
-    if (!error) {
+    if (req.body.post.user_id===user.id && !error) {
         req.body.post.user_id = user.id; 
         next(); // move on
         return; 
@@ -123,31 +123,45 @@ protectedRouter.post('/create', logger, authMiddleware, errorMiddleware, async (
 
     const supabaseURL = process.env.SUPABASE_URL; 
     const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-    let supabaseUser = createClient(supabaseURL, supabaseAnonKey, {
-        auth: {
-            token: req.headers.authorization.split(' ')[1]
-        }
-    }); 
+    const token = req.headers.authorization.split(' ')[1]; 
+    const refresh = req.headers.authorization.split(' ')[1]; 
+    let supabaseUser = createClient(supabaseURL, supabaseAnonKey, {auth: {token: token}}); 
+    await supabaseUser.auth.setSession(token, refresh); 
+    console.log('Token: ' + supabaseUser.auth.token); 
 
     let image_url = '';  
     if (req.body.image_url != null) image_url = req.body.image_url; 
 
-    // inserts post into table
+    const { data: { user }, userError } = await supabaseUser.auth.getUser(token);
+    if (userError) {
+        console.error("User authentication error:", userError);
+        return res.status(401).json({ error: userError.message }); 
+    }
+
+    console.log(req.body); 
+    //inserts post into table
+    // const { data , error } = await supabaseUser
+    //     .from('posts')
+    //     .insert(
+    //         [{
+    //             title: req.body.post.title,
+    //             description: req.body.post.description, 
+    //             user_id: user.id,
+    //             items: req.body.post.items, 
+    //             start_date: new Date(req.body.post.start_date), 
+    //             end_date: new Date(req.body.post.end_date), 
+    //             location: req.body.post.location,
+    //             image_url: image_url
+    //         }]); 
+
     const { data , error } = await supabaseUser
-        .from('posts')
-        .insert([
-            {
-                title: req.body.post.title,
-                description: req.body.post.description, 
-                user_id: req.body.post.user_id, 
-                items: req.body.post.items, 
-                start_date: req.body.post.start_date, 
-                end_date: req.body.post.end_date, 
-                location: req.body.post.location,
-                image_url: image_url
-            }])
-        .select(); 
-    // error from supabase 
+    .from('posts')
+    .insert(
+        {
+            title: req.body.post.title
+        }); 
+
+    console.log("Data: " + data); 
     console.log(error); 
     if (error != null) {
         const newError = new Error(error.message); 
@@ -157,7 +171,7 @@ protectedRouter.post('/create', logger, authMiddleware, errorMiddleware, async (
     } 
 
     // no error
-    res.json(data); // return posted data
+    res.status(201).json(data); // return posted data
 })
 
 module.exports = protectedRouter; 
