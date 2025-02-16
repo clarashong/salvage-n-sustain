@@ -1,6 +1,5 @@
 const express = require('express');
-const router = express.Router();
-const protectedRouter = express.Router(); 
+const router = express.Router(); 
 const supabase = require('../data/supabaseClient'); 
 
 /**
@@ -52,26 +51,6 @@ const logger = (req, res, next) => {
     next(); 
 };
 
-const authMiddleware = async (req, res, next) => {
-    // check if user is logged in and whether session is correct - return 401 otherwise
-    const token = req.headers.authorization.split(' ')[1]; 
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    // no error found, the session matches a current session in supabase 
-    // user is authenticated
-    if (req.body.post.user_id===user.id && !error) {
-        req.body.post.user_id = user.id; 
-        next(); // move on
-        return; 
-    } 
-    res.status(401)
-    .json({
-        error: {
-            message: "no access"
-        }
-    }); 
-    return; 
-};
-
 // error middleware
 const errorMiddleware = (err, req, res, next) => {
     res.status(err.status || 400) // Set the status code (default to 500)
@@ -81,15 +60,13 @@ const errorMiddleware = (err, req, res, next) => {
       } 
     });
 }; 
-
-protectedRouter.use(express.json()); 
-protectedRouter.use(errorMiddleware); 
+ 
 router.use(express.json()); 
 router.use(errorMiddleware); 
 
 /**
  * @swagger
- * /api/posts:
+ * /search:
  *   get:
  *     summary: Get all posts with optional filtering
  *     tags: [Posts]
