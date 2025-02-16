@@ -1,7 +1,6 @@
-import '../styles/index.css';
-import supabase from '../data/supabaseClient' 
-import { useState } from 'react';
-
+import '../styles/index.css'; 
+import { Posting } from '../components/Posting'; 
+import { useState, useEffect } from 'react';
 
 /**
  * A simple search bar 
@@ -21,6 +20,7 @@ const SearchBar = ({item, onChange, onSearch}) => {
     ); 
 };
 
+
 /**
  * A page with all the posts correlated with the search
  * @component 
@@ -29,43 +29,73 @@ const SearchBar = ({item, onChange, onSearch}) => {
  * @returns {JSX.Element} The posts page
 */
 export function PostPage ({searchItem=''}) {
+    const [currItem, setCurrItem] = useState(''); 
     const [item, setItem] = useState(searchItem); 
     const [postList, setPostList] = useState([]);  // list of objects (posts)
+    const [pageNumber, setPageNumber] = useState(1); 
+    const [loading, setLoading] = useState(true); 
     
-    const search = async () => {
-        if (!item) {
-            const {data:posts, error} = await supabase
-                .from('posts')
-                .select('title,description,items,start_date,end_date,location,image_url,user_name'); 
-            if (error) {
-                throw error; 
-            }
-            setPostList(posts); 
-            console.log(postList); 
-        } else {
-            const {data:posts, error} = await supabase
-                .from('posts')
-                .select('title,description,items,start_date,end_date,location,image_url,user_name')
-                .filter('items', 'cs', `[%${item}%]`)  // Case sensitive; 
-            if (error) {
-                throw error; 
-            }
-            setPostList(posts); 
-            console.log(postList); 
-        }
+    const search = () => {
+        setItem(currItem); 
     }; 
+
+    // search posts at the beginning 
+    useEffect(() => {
+        const fetchPosts = async () => { 
+            setLoading(true); 
+            const params = new URLSearchParams();
+            params.append('search', item);
+            params.append('page', pageNumber);
+            let json = []; 
+            const url = `/posts/search?${params.toString()}`;
+            try {
+              const response = await fetch(url);
+              json = await response.json();
+              setLoading(false); 
+            } catch (e) {
+                console.log(e.message); 
+                throw e; 
+            } finally {
+                setPostList(json); 
+            }
+        };
+        fetchPosts(); 
+        console.log(postList); 
+    }, [item, pageNumber]); 
+    
+    useEffect(() => {
+        console.log('Updated postList:', postList);
+    }, [postList]);
+
     // set the page to some sort of loading state 
     
-    // await/get the list of posts based on the search 
-    
+    const renderPage = () => {
+        if (loading) {
+            return (
+                <div>
+                    Loading...
+                </div>
+            ); 
+        }
+        return (
+            <div>
+                <SearchBar 
+                    value={currItem}
+                    onChange={(e) => setCurrItem(e.target.value)}
+                    onSearch={search}>
+                </SearchBar>
+                <div className="postList">
+                    {postList.map((post, index) => <Posting postContent={post} key={index}></Posting>)}
+                </div>
+            </div>
+        ); 
+    }; 
+
     return (
         <div>
-            <h1> Posts </h1>
-            <SearchBar 
-                value={item}
-                onChange={(e) => setItem(e.target.value)}
-                onSearch={search}>
-            </SearchBar>
-        
-        </div>); 
+            <h1>Posts</h1>
+            {renderPage()}
+        </div>
+    ); 
+
 }
