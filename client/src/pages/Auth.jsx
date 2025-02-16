@@ -2,7 +2,7 @@ import '../styles/index.css';
 import '../styles/Auth.css';
 import supabase from '../data/supabaseClient' 
 import { useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 
 /**
  * A simple login page with user email and password input. Leads 
@@ -11,10 +11,10 @@ import { useState, useEffect } from 'react';
  * @param {string} props.prevPage - the last page route accessed
  * @returns {JSX.Element} The login page
  */
-export function LoginPage({nextPage}) {
+export function LoginPage({nextPage='/user'}) {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState(''); 
-
+    const navigate = useNavigate(); 
     /**
      * Attempt to login the user 
      * @returns {object|void} either returns the error message, or does nothing and redirects to next page 
@@ -25,9 +25,8 @@ export function LoginPage({nextPage}) {
             email: email,
             password: password
         }); 
-        // TODO - delete after developed 
-        console.log(data); 
-        console.log(error); 
+        if (error) console.log(error.message);
+        navigate(nextPage); 
     }
 
     const signOutUser = async (event) => {
@@ -80,10 +79,11 @@ export function SignUpPage({nextPage}) {
         ORGANIZATION: 'Organization', 
         PERSONAL: 'Personal'
     }; 
-    
+    const navigate = useNavigate(); 
+
     /**
      * Attempt to sign up the user 
-     * @returns {void} either returns an error message, or does nothing and redirects to next page 
+     * @returns {void} nothing and redirects to next page 
      */
     const signUpUser = async (event) => {
         event.preventDefault(); 
@@ -92,6 +92,11 @@ export function SignUpPage({nextPage}) {
             console.error("Passwords don't match"); 
             setErrorMsg("Passwords don't match"); 
             return; 
+        } else if (password.length < 8) {
+            setErrorMsg("Passwords must be at least 8 characters"); 
+            return; 
+        } else if (!email.contains( "@")) {
+            setErrorMsg("Must use valid email"); 
         } else {
             setErrorMsg(''); 
         }
@@ -105,12 +110,15 @@ export function SignUpPage({nextPage}) {
                 }
             }
         });
-        if (error != null) {
+        if (error) {
             console.error(error); 
             setErrorMsg(error.message); 
-        } else {
-            setErrorMsg(''); 
-        }
+            return;
+        } 
+        setErrorMsg(''); 
+        // navigate to the next page
+        navigate(nextPage)
+
         // TODO - delete after developed 
         console.log(data); 
         console.log(error); 
