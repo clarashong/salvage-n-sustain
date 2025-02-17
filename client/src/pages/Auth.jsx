@@ -36,25 +36,24 @@ export function LoginPage({nextPage='/user'}) {
     }
 
     return (
-        <div>
-            <h1>Login</h1>
-            <div className="inputBlock">
-                <form onSubmit={loginUser}>
+        <div className="page">
+            <div className="auth-form">
+                <h1>Login</h1>
+                <form onSubmit={loginUser} className="input-form">
                     <input 
                         type="text"
-                        placeholder="Email ex. email@gmail.com"
+                        placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}>    
-                    </input><br></br>
+                    </input>
                     <input 
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     >    
-                    </input><br></br>
+                    </input>
                     <button type="submit">Login</button>
-                    <button onClick={signOutUser}>Sign Out</button>
                 </form>
             </div>
         </div>
@@ -125,42 +124,42 @@ export function SignUpPage({nextPage}) {
     };
 
     return (
-        <div> 
-            <h1>Sign Up</h1>
-            <div className="inputBlock">
-                <form onSubmit={signUpUser}>
-                    <p className="errorMessage">{errorMsg}</p>
+        <div className="page">
+            <div className="auth-form"> 
+                <h1>Sign Up</h1>
+                <form className="input-form" onSubmit={signUpUser}>    
                     <input 
                         type="text"
-                        placeholder="Email ex. email@gmail.com"
+                        placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}>    
-                    </input><br></br>
+                    </input>
                     <input 
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}>    
-                    </input><br></br>
+                    </input>
                     <input 
                         type="password"
                         placeholder="Confirm Password"
                         value={confirmPass}
                         onChange={(e) => setConfirmPass(e.target.value)}>    
-                    </input><br></br>
+                    </input>
                     <select 
                         value={accountType} 
                         onChange={(e) => {setAccountType(e.target.value)}}>
                         <option>Select account type</option>
                         {Object.entries(accountTypes).map(([key, value]) => <option key={value}>{value}</option>)}
-                    </select> <br></br>
+                    </select>
                     <input 
                         type="text"
                         placeholder= {((accountType === accountTypes.ORGANIZATION )? accountType : "Full") + " Name"}  
                         value={name}
                         onChange={(e) => setName(e.target.value)}>    
-                    </input><br></br>
+                    </input>
                     <button type="submit">Sign Up</button>
+                    {errorMsg ? "" : <p className="errorMessage">{errorMsg}</p>}
                 </form>
             </div>
         </div>

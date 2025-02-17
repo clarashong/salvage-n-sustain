@@ -1,0 +1,49 @@
+.page {
+    height: 70vh;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    padding: 1rem; 
+}
+.auth-form {
+    background-color: var(--bg-secondary);
+    padding: 1rem; 
+    min-width: 20%;
+    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-form {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px; 
+}
+
+input {
+    font-size: 14pt; 
+    color: var(--text-primary);
+    border: 0; 
+    padding: 0.25rem;
+}
+
+h1 {
+    color: var(--text-primary)
+}
+
+button {
+    font-size: 14pt;
+    background-color: var(--primary);
+    border: 0;
+    padding: 0.25rem;
+    color: var(--text-primary); 
+}
+
+select {
+    font-size: 14pt; 
+    color: var(--text-primary);
+    border: 0; 
+    padding: 0.25rem; 
+}

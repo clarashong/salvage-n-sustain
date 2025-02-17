@@ -1,0 +1,50 @@
+.navbar {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem; 
+    background-color: var(--secondary);
+}
+
+.navleft {
+    display: flex; 
+    align-items: center;
+}
+
+.logo {
+    min-width: 50px;
+    max-width: 90px;  
+    left: 0px; 
+}
+
+.navname {
+    color: var(--text-secondary); 
+    margin-left: 15px; 
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.navlist {
+    display: flex;
+    align-items: center;
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0;
+    right: 0px; 
+    gap: 15px; 
+    color: var(--text-secondary); 
+    font-style: none;
+}
+
+.navitem {
+    display: flex; 
+    align-items: center; 
+}
+
+.link-title {
+    color: var(--text-secondary); 
+}
+
+.icon {
+    width: 30px; 
+}
