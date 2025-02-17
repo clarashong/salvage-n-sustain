@@ -31,18 +31,30 @@
     margin: 0; 
     padding: 0;
     right: 0px; 
-    gap: 15px; 
+    gap: 20px; 
     color: var(--text-secondary); 
     font-style: none;
+    font-size: 14pt; 
+    margin-left: 15px;
+    height: 100%;
 }
 
 .navitem {
     display: flex; 
     align-items: center; 
+    font-style: normal;
+    text-decoration: none;
+    height: 100%;
+}
+
+.navitem:hover {
+    background-color: var(--accent);
 }
 
 .link-title {
     color: var(--text-secondary); 
+    font-style: normal;
+    text-decoration: none;
 }
 
 .icon {

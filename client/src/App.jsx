@@ -5,6 +5,7 @@ import { LoginPage, SignUpPage } from './pages/Auth'
 import { UserPage } from './pages/User';
 import { PostPage } from './pages/Posts';
 import { NavBar } from './components/NavBar';
+import { HomePage } from './pages/Home';
 
 const Layout = () => {
   return (
@@ -20,6 +21,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/user" element={<UserPage />} />

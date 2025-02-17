@@ -1,16 +1,22 @@
 /* src/styles/colors.css or index.css */
 :root {
+  /* CSS HEX */
+  --raisin-black: #2e282aff;
+  --wheat: #f8dfb4ff;
+  --tiffany-blue: #93dccdff;
+  --jade: #2fa86eff;
+
   /* Primary Colors */
-  --primary: #e0a032;
-  --secondary: #5d3321;
-  --accent: #4ad5c3;
+  --primary: rgb(238, 174, 63);
+  --secondary: rgb(218, 235, 232);
+  --accent: #93dccdff;
   
   /* Text Colors */
-  --text-primary: #5b3823;
-  --text-secondary: #d0f3ef;
+  --text-primary: rgb(246, 233, 212);
+  --text-secondary: #5b3823;
   
   /* Background Colors */
-  --bg-primary: #267b69;
+  --bg-primary: rgb(125, 190, 160);
   --bg-secondary: #ebe1cf;
   
   /* Status Colors */

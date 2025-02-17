@@ -31,7 +31,6 @@ export function NavBar() {
                     <span className="link-title">Profile</span>
                     <img className="icon" src={profileIcon}></img>
                 </Link>
-
             </ul>   
         </div>
     ); 
