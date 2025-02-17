@@ -48,7 +48,7 @@ export const PostCreator = () => {
             console.log(insertError); 
             throw new Error(insertError.message); 
         } 
-    }
+    }; 
     
     /**
      * Attempt to sign up the user 
@@ -65,7 +65,7 @@ export const PostCreator = () => {
         } catch (e) {
             setErrorMsg(e.message)
         }
-    }
+    }; 
     
     return (
         <div>
@@ -76,6 +76,7 @@ export const PostCreator = () => {
                     <input 
                         type="text"
                         placeholder="Program Title"
+                        maxLength="100"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}>    
                     </input><br></br>
@@ -83,11 +84,12 @@ export const PostCreator = () => {
                     <input 
                         type="text"
                         placeholder=""
+                        maxlength="1000"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     >    
                     </input><br></br>
-                    <p>What item are you accepting?</p>
+                    <p>What item are you accepting? (separate with commas)</p>
                     <input 
                         type="text"
                         placeholder=""

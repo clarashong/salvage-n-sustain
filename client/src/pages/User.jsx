@@ -1,6 +1,6 @@
 import '../styles/index.css';
 import { Posting } from '../components/Posting';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { PostCreator } from '../components/PostCreator';
 import supabase from '../data/supabaseClient' 
 import { useState, useEffect } from 'react';
@@ -24,13 +24,6 @@ const ProfilePage = ({userData}) => {
             <p>{metadata.email}</p>
             <h3>Account Type</h3>
             <p>{metadata.accountType}</p>
-            <h3>Location</h3>
-            <h4>City</h4>
-            <p>{}</p>
-            <h4>State/Province</h4>
-            <p>{}</p>
-            <h4>Country</h4>
-            <p>{}</p>
         </div>
     ); 
 }
@@ -45,12 +38,12 @@ export function UserPage() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); 
     const [page, setPage] = useState(0); 
     const [userData, setUserData] = useState({}); 
-    const [userSaved, setUserSaved] = useState([]);
     const [userPosts, setUserPosts] = useState([]); 
     const pages = {
         PROFILE: 'Profile',
         POSTS: 'Posts', 
-        WELCOME: 'Welcome'
+        WELCOME: 'Welcome',
+        CREATE_POST: 'Create a Post'
     }; 
 
     const initPosts = async () => {
@@ -96,7 +89,7 @@ export function UserPage() {
         }
         
         checkSession(); 
-    }, []); 
+    }, [pages.WELCOME]); 
     
     const UserSideBar = () => {
         return (
@@ -108,6 +101,7 @@ export function UserPage() {
                     }}>
                     {pages.POSTS}
                 </button>
+                <button onClick={() => {setPage(pages.CREATE_POST)}}>{pages.CREATE_POST}</button>
             </div>
         ); 
     }
@@ -121,31 +115,41 @@ export function UserPage() {
                     <p>Log in <Link to='/login' state={{nextPage: "/user"}}>here</Link></p>
                 </div>
             ); 
-        } else if (page === pages.WELCOME) {
-            return (
-                <div>
-                    <UserSideBar></UserSideBar>
-                    <p>Welcome! Glad you want to salvage and sustain some items!</p>
-                </div>
-            ); 
-        }else if (page === pages.PROFILE) {
-            return (
-                <div>
-                    <UserSideBar></UserSideBar>
-                    <h1>Profile</h1>
-                    <ProfilePage userData={userData}></ProfilePage>
-                </div>
-            ); 
-        } else if (page === pages.POSTS) {
-            return (
-                <div>
-                    <UserSideBar></UserSideBar>
-                    <h1>Posts</h1>
-                    {userPosts.map((post, index) => <Posting postContent={post} key={index}></Posting>)}
-                </div>
-            ); 
+        } 
+        switch (page) {
+            case pages.PROFILE:
+                return (
+                    <div>
+                        <UserSideBar></UserSideBar>
+                        <h1>Profile</h1>
+                        <ProfilePage userData={userData}></ProfilePage>
+                    </div>
+                ); 
+                case pages.POSTS:
+                    return (
+                        <div>
+                        <UserSideBar></UserSideBar>
+                        <h1>Posts</h1>
+                        {userPosts.map((post, index) => <Posting postContent={post} key={index}></Posting>)}
+                    </div>
+                ); 
+                case pages.CREATE_POST: 
+                return (
+                    <div>
+                        <UserSideBar></UserSideBar>
+                        <PostCreator></PostCreator>
+                    </div>
+                ); 
+                // welcome page
+                default:
+                    return (
+                        <div>
+                            <UserSideBar></UserSideBar>
+                            <p>Welcome! Glad you want to salvage and sustain some items!</p>
+                        </div>
+                    ); 
+            }
         }
-    }
-
+        
     return renderPage();
 }
