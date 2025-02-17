@@ -1,7 +1,6 @@
-import '../styles/index.css';
 import '../styles/Auth.css';
 import supabase from '../data/supabaseClient' 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 /**
@@ -11,9 +10,10 @@ import { useNavigate } from 'react-router-dom';
  * @param {string} props.prevPage - the last page route accessed
  * @returns {JSX.Element} The login page
  */
-export function LoginPage({nextPage='/user'}) {
+export function LoginPage({nextPage='/'}) {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState(''); 
+    const [errorMsg, setErrorMsg] = useState(''); 
     const navigate = useNavigate(); 
     /**
      * Attempt to login the user 
@@ -21,18 +21,26 @@ export function LoginPage({nextPage='/user'}) {
      */
     const loginUser = async (event) => {
         event.preventDefault();
+        setErrorMsg(''); 
         const { data, error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password
         }); 
-        if (error) console.log(error.message);
+        if (!data) {
+            setErrorMsg("No account data retrieved");
+            return; 
+        }
+        if (error) {
+            setErrorMsg(error.message); 
+            return; 
+        }
         navigate(nextPage); 
     }
 
     const signOutUser = async (event) => {
-        console.log("signing out"); // TODO - delete after dev
         event.preventDefault();
         const { error } = await supabase.auth.signOut(); 
+        if (error) console.error(error); 
     }
 
     return (
@@ -54,6 +62,7 @@ export function LoginPage({nextPage='/user'}) {
                     >    
                     </input>
                     <button type="submit">Login</button>
+                    <p className='errorMessage'>{errorMsg}</p>
                 </form>
             </div>
         </div>
@@ -67,7 +76,7 @@ export function LoginPage({nextPage='/user'}) {
  * @param {string} props.nextPage route to next page 
  * @returns 
  */
-export function SignUpPage({nextPage}) {
+export function SignUpPage({nextPage='/'}) {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');
     const [name, setName] = useState(''); 
@@ -86,7 +95,6 @@ export function SignUpPage({nextPage}) {
      */
     const signUpUser = async (event) => {
         event.preventDefault(); 
-        console.log("attempting to sign up"); 
         if (password != confirmPass) {
             console.error("Passwords don't match"); 
             setErrorMsg("Passwords don't match"); 

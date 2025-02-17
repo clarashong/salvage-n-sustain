@@ -9,14 +9,24 @@ import { useState, useEffect } from 'react';
  * @returns {JSX.Element} 
  */
 export const Posting = ({postContent}) => {
+    console.log(postContent); 
     const maxLength = 100; 
     let trimmedDescription = postContent.description; 
-    if (trimmedDescription.length > maxLength) trimmedDescription = trimmedDescription.substring(0, 100);
+
+    const id = postContent.id || postContent.post_id; 
+    const title = postContent.title || postContent.post_title; 
+    const description = postContent.description || postContent.post_description; 
+    const items = postContent.items || postContent.post_items; 
+    const start_date = postContent.start_date || postContent.post_start_date; 
+    const end_date = postContent.end_date || postContent.post_end_date; 
+    const location = postContent.location || postContent.post_location; 
+    const user_name = postContent.user_name || postContent.post_user_name; 
+
     return (
-        <div className="postCard"> 
+        <div className="posting"> 
             <img style={{backgroundColor: "blue"}}></img>
-            <span>{postContent.title}</span>
-            <span>{postContent.description}</span> 
+            <span>{title}</span>
+            <span>{description}</span> 
         </div>
     ); 
 }

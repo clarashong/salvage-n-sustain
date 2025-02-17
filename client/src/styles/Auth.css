@@ -3,16 +3,18 @@
     display: flex; 
     justify-content: center;
     align-items: center;
-    padding: 1rem; 
+    padding: 2rem; 
 }
+
 .auth-form {
     background-color: var(--bg-secondary);
     padding: 1rem; 
-    min-width: 20%;
+    min-width: 25%;
     max-width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 20px;
 }
 
 .input-form {
@@ -20,30 +22,43 @@
     flex-direction: column;
     justify-content: center;
     gap: 10px; 
+    min-width: 90%; 
 }
 
 input {
     font-size: 14pt; 
-    color: var(--text-primary);
+    color: var(--text-secondary);
     border: 0; 
-    padding: 0.25rem;
+    padding: 0.4rem;
+    border-radius: 5px;
 }
 
 h1 {
-    color: var(--text-primary)
+    color: var(--text-secondary)
 }
 
 button {
     font-size: 14pt;
     background-color: var(--primary);
     border: 0;
-    padding: 0.25rem;
+    padding: 0.4rem;
+    color: var(--text-secondary); 
+    border-radius: 5px;
+}
+
+button:hover {
     color: var(--text-primary); 
+    background-color: rgb(199, 130, 9);
 }
 
 select {
     font-size: 14pt; 
-    color: var(--text-primary);
+    color: var(--text-secondary);
     border: 0; 
-    padding: 0.25rem; 
+    padding: 0.4rem;
+    border-radius: 5px;
+}
+
+.errorMessage {
+    color: darkred; 
 }

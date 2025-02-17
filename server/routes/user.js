@@ -76,9 +76,12 @@ router.get('/myPosts', logger, errorMiddleware, async (req, res, next) => {
             .from('posts')
             .select('id, title,description,items,start_date,end_date,location,image_url,user_name')
             .eq('user_id', req.headers.user_id); 
-            res.status(200).json(posts); 
+        if (error) {
+            throw error; 
+        }
+        res.status(200).json(posts); 
 
-    } catch (e) {
+    } catch (error) {
         const newError = new Error(error.message); 
         newError.status = 400; 
         next(newError); 

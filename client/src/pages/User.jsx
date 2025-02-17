@@ -1,4 +1,4 @@
-import '../styles/index.css';
+import '../styles/User.css'; 
 import { Posting } from '../components/Posting';
 import { Link } from 'react-router-dom';
 import { PostCreator } from '../components/PostCreator';
@@ -119,7 +119,7 @@ export function UserPage() {
         switch (page) {
             case pages.PROFILE:
                 return (
-                    <div>
+                    <div className="user-page">
                         <UserSideBar></UserSideBar>
                         <h1>Profile</h1>
                         <ProfilePage userData={userData}></ProfilePage>
@@ -127,15 +127,15 @@ export function UserPage() {
                 ); 
                 case pages.POSTS:
                     return (
-                        <div>
-                        <UserSideBar></UserSideBar>
-                        <h1>Posts</h1>
-                        {userPosts.map((post, index) => <Posting postContent={post} key={index}></Posting>)}
-                    </div>
+                        <div className="user-page">
+                            <UserSideBar></UserSideBar>
+                            <h1>Posts</h1>
+                            {userPosts.map((post, index) => <Posting postContent={post} key={index}></Posting>)}
+                        </div>
                 ); 
                 case pages.CREATE_POST: 
                 return (
-                    <div>
+                    <div className="user-page">
                         <UserSideBar></UserSideBar>
                         <PostCreator></PostCreator>
                     </div>
@@ -143,7 +143,7 @@ export function UserPage() {
                 // welcome page
                 default:
                     return (
-                        <div>
+                        <div className="user-page">
                             <UserSideBar></UserSideBar>
                             <p>Welcome! Glad you want to salvage and sustain some items!</p>
                         </div>
@@ -151,5 +151,6 @@ export function UserPage() {
             }
         }
         
-    return renderPage();
+    return (renderPage()); 
+        
 }
