@@ -1,12 +1,12 @@
-import './index.css';
-import supabase from './data/supabaseClient' 
+import '../styles/index.css';
+import supabase from '../data/supabaseClient' 
 import { useState } from 'react';
 
 /** A form to create a post
  * @component 
  * @returns {JSX.Element} the form 
  */
-const PostCreator = () => {
+export const PostCreator = () => {
     
     const [title, setTitle] = useState(''); 
     const [description, setDescription] = useState(''); 
@@ -48,7 +48,7 @@ const PostCreator = () => {
             console.log(insertError); 
             throw new Error(insertError.message); 
         } 
-    }
+    }; 
     
     /**
      * Attempt to sign up the user 
@@ -61,11 +61,11 @@ const PostCreator = () => {
             if (title === '') throw new Error('Post must have a title'); 
             if (startDate.localeCompare(endDate) > 0) throw new Error ('End date must be at start date or later'); 
             await createPost(); 
+            setErrorMsg('Post Created!'); 
         } catch (e) {
             setErrorMsg(e.message)
         }
-        if (!errorMsg) setErrorMsg('Post Created!'); 
-    }
+    }; 
     
     return (
         <div>
@@ -76,6 +76,7 @@ const PostCreator = () => {
                     <input 
                         type="text"
                         placeholder="Program Title"
+                        maxLength="100"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}>    
                     </input><br></br>
@@ -83,16 +84,17 @@ const PostCreator = () => {
                     <input 
                         type="text"
                         placeholder=""
+                        maxlength="1000"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     >    
                     </input><br></br>
-                    <p>What item are you accepting?</p>
+                    <p>What item are you accepting? (separate with commas)</p>
                     <input 
                         type="text"
                         placeholder=""
                         value={items}
-                        onChange={(e) => setItems([e.target.value])}
+                        onChange={(e) => setItems(e.target.value.split(',').map((i) => (i.trim())))}
                     >    
                     </input><br></br>
                     <p>Start Date</p>
@@ -117,14 +119,4 @@ const PostCreator = () => {
             </div>
         </div>
     );
-}
-
-
-/**
- * A simple user page
- * @component
- * @returns {JSX.Element} The user page
- */
-export function UserPage() {
-    return <PostCreator></PostCreator>
 }
