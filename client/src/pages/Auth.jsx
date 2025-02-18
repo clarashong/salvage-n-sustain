@@ -37,12 +37,6 @@ export function LoginPage({nextPage='/'}) {
         navigate(nextPage); 
     }
 
-    const signOutUser = async (event) => {
-        event.preventDefault();
-        const { error } = await supabase.auth.signOut(); 
-        if (error) console.error(error); 
-    }
-
     return (
         <div className="page">
             <div className="auth-form">
@@ -61,7 +55,10 @@ export function LoginPage({nextPage='/'}) {
                         onChange={(e) => setPassword(e.target.value)}
                     >    
                     </input>
-                    <button type="submit">Login</button>
+                    <div className="auth-buttons">
+                        <button type="submit">Login</button>
+                        <button onClick={() => navigate("/signup")}>Sign Up</button>
+                    </div>
                     <p className='errorMessage'>{errorMsg}</p>
                 </form>
             </div>

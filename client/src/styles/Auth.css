@@ -34,7 +34,8 @@ input {
 }
 
 h1 {
-    color: var(--text-secondary)
+    color: var(--text-secondary);
+    margin-top: 0;
 }
 
 button {
@@ -61,4 +62,11 @@ select {
 
 .errorMessage {
     color: darkred; 
+}
+
+.auth-buttons {
+    display: flex; 
+    flex-direction: row; 
+    gap: 10px; 
+    justify-content: center;
 }

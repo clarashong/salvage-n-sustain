@@ -70,25 +70,25 @@ export const PostCreator = () => {
     return (
         <div>
             <h1>Create a Posting</h1>
-            <div className="inputBlock">
-                <form onSubmit={validatePost}>
+            <div>
+                <form className="post-creator"onSubmit={validatePost}>
                     <p>Title</p>
                     <input 
                         type="text"
-                        placeholder="Program Title"
                         maxLength="100"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}>    
-                    </input><br></br>
+                    </input>
                     <p>Describe your program</p>
-                    <input 
+                    <textarea 
+                        className="description-input"
                         type="text"
                         placeholder=""
                         maxlength="1000"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     >    
-                    </input><br></br>
+                    </textarea>
                     <p>What item are you accepting? (separate with commas)</p>
                     <input 
                         type="text"
@@ -96,7 +96,7 @@ export const PostCreator = () => {
                         value={items}
                         onChange={(e) => setItems(e.target.value.split(',').map((i) => (i.trim())))}
                     >    
-                    </input><br></br>
+                    </input>
                     <p>Start Date</p>
                     <input 
                         type="date"
@@ -104,7 +104,7 @@ export const PostCreator = () => {
                         value={startDate}
                         onChange={(e) => setStartDate(e.target.value)}
                     >    
-                    </input><br></br>
+                    </input>
                     <p>End Date</p>
                     <input 
                         type="date"
@@ -112,8 +112,10 @@ export const PostCreator = () => {
                         value={endDate}
                         onChange={(e) => setEndDate(e.target.value)}
                     >    
-                    </input><br></br>
-                    <button type="submit">Create Post</button>
+                    </input>
+                    <button 
+                    className="creator-submit-button"
+                    type="submit">Create Post</button>
                     <p className="errorMessage">{errorMsg}</p>
                 </form>
             </div>

@@ -10,13 +10,12 @@ import { useLocation } from 'react-router-dom';
  * @param {string} props.item 
  * @returns {JSX.Element} The search bar
  */
-const SearchBar = ({item, onChange, onSearch}) => {
+const SearchBar = ({item, onChange, onSearch, onKeyDown}) => {
     return (
         <div className="search-bar">
-            <input value={item} onChange={onChange} className="search-input"/>
-            <button onClick={onSearch}>
+            <input value={item} onChange={onChange} onKeyDown={onKeyDown} className="search-input"/>
+            <button className="search-button" onClick={onSearch}>
                 <span>&#128269;</span> {/* Magnifying glass */} 
-                Search
             </button>
         </div> 
     ); 
@@ -45,6 +44,12 @@ export function PostPage () {
         setItem(currItem); 
     }; 
 
+    const handleEnter = (e) => {
+        if (e.key === "Enter") { 
+            search(); 
+        }
+    }; 
+
     // search posts at the beginning 
     useEffect(() => {
         const fetchPosts = async () => { 
@@ -65,8 +70,6 @@ export function PostPage () {
                 setPostList(json); 
             }
         };
-        console.log(searchItem); 
-        setItem(searchItem); 
         fetchPosts(); 
         console.log(postList); 
     }, [item, pageNumber]); 
@@ -96,7 +99,8 @@ export function PostPage () {
                     <SearchBar 
                         value={currItem}
                         onChange={(e) => setCurrItem(e.target.value)}
-                        onSearch={search}>
+                        onSearch={search}
+                        onKeyDown={handleEnter}>
                     </SearchBar>
                 </div>
                 <div className="post-list">

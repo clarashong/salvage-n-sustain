@@ -28,7 +28,8 @@ export function HomePage() {
 
     return (
         <div className="home-page">
-            <h1>Welcome! Hope you're ready to salvage and sustain your items!</h1>
+            <h1>Welcome to Salvage 'N Sustain!</h1> 
+            <h3> Hope you're ready to donate or properly dispose your items!</h3>
             <div className="block">
                 <h2>What would you like to give away?</h2>
                 <div className="box-block">
