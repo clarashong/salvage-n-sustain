@@ -119,6 +119,7 @@ router.get('/search', logger, errorMiddleware, async (req, res, next) => {
         search,
         page
     } = req.query; 
+    console.log(search); 
 
     if (!search) {
         // select all posts 

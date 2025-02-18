@@ -1,4 +1,4 @@
-import '../styles/index.css';
+import '../styles/User.css'; 
 import { Posting } from '../components/Posting';
 import { Link } from 'react-router-dom';
 import { PostCreator } from '../components/PostCreator';
@@ -34,17 +34,19 @@ const ProfilePage = ({userData}) => {
  * @returns {JSX.Element} The user page
 */
 export function UserPage() {
-    const [loading, setLoading] = useState(true); 
-    const [isLoggedIn, setIsLoggedIn] = useState(false); 
-    const [page, setPage] = useState(0); 
-    const [userData, setUserData] = useState({}); 
-    const [userPosts, setUserPosts] = useState([]); 
     const pages = {
         PROFILE: 'Profile',
         POSTS: 'Posts', 
         WELCOME: 'Welcome',
         CREATE_POST: 'Create a Post'
     }; 
+
+    const [loading, setLoading] = useState(true); 
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const [page, setPage] = useState(pages.WELCOME); 
+    const [userData, setUserData] = useState({}); 
+    const [userPosts, setUserPosts] = useState([]); 
+    
 
     const initPosts = async () => {
         if (!userData || !userData.id) return; // no user data
@@ -83,17 +85,22 @@ export function UserPage() {
                 console.log(e.message); 
             } finally {
                 setUserData(user); 
-                setPage(pages.WELCOME); 
                 setLoading(false); 
             }
         }
         
         checkSession(); 
-    }, [pages.WELCOME]); 
+    }, [page]); 
     
+    const signOutUser = async (event) => {
+        event.preventDefault();
+        const { error } = await supabase.auth.signOut(); 
+        if (error) console.error(error); 
+    }
+
     const UserSideBar = () => {
         return (
-            <div> 
+            <div className="user-side-bar"> 
                 <button onClick={() => setPage(pages.PROFILE)}>{pages.PROFILE}</button>
                 <button onClick={() => {
                         initPosts(); 
@@ -102,54 +109,70 @@ export function UserPage() {
                     {pages.POSTS}
                 </button>
                 <button onClick={() => {setPage(pages.CREATE_POST)}}>{pages.CREATE_POST}</button>
+                <button className="sign-out-button" onClick={signOutUser}> Sign Out</button>
             </div>
         ); 
     }
 
     const renderPage = () => {
-        if (loading) return (<p>Loading...</p>); 
+        if (loading) return (
+            <div className="user-page">
+                <p>Loading...</p>
+            </div>
+        ); 
         if (!isLoggedIn) {
             return (
-                <div>
-                    <p>You are not logged in</p>
-                    <p>Log in <Link to='/login' state={{nextPage: "/user"}}>here</Link></p>
+                <div className="user-page">
+                    <div className="user-content-block">
+                        <p>You are not logged in.</p>
+                        <p>Log in <Link to='/login' state={{nextPage: "/user"}}>here</Link></p>
+                    </div>
                 </div>
             ); 
         } 
         switch (page) {
             case pages.PROFILE:
                 return (
-                    <div>
+                    <div className="user-page">
                         <UserSideBar></UserSideBar>
-                        <h1>Profile</h1>
-                        <ProfilePage userData={userData}></ProfilePage>
+                        <div className="user-content-block">
+                            <h1>Profile</h1>
+                            <ProfilePage userData={userData}></ProfilePage>
+                        </div>
                     </div>
                 ); 
                 case pages.POSTS:
                     return (
-                        <div>
-                        <UserSideBar></UserSideBar>
-                        <h1>Posts</h1>
-                        {userPosts.map((post, index) => <Posting postContent={post} key={index}></Posting>)}
-                    </div>
-                ); 
+                        <div className="user-page">
+                            <UserSideBar></UserSideBar>
+                            <div className="user-content-block">
+                                <h1>Posts</h1>
+                                {userPosts.map((post, index) => <Posting postContent={post} key={index}></Posting>)}
+                            </div>
+                        </div>
+                    ); 
                 case pages.CREATE_POST: 
                 return (
-                    <div>
+                    <div className="user-page">
                         <UserSideBar></UserSideBar>
-                        <PostCreator></PostCreator>
+                        <div className="user-content-block">
+                            <PostCreator></PostCreator>
+                        </div>
                     </div>
                 ); 
                 // welcome page
                 default:
                     return (
-                        <div>
+                        <div className="user-page">
                             <UserSideBar></UserSideBar>
-                            <p>Welcome! Glad you want to salvage and sustain some items!</p>
+                            <div className="user-content-block">
+                                <h1>Welcome! <br></br>Glad you want to salvage and sustain some items!</h1>
+                            </div>
                         </div>
                     ); 
             }
         }
         
-    return renderPage();
+    return (renderPage()); 
+        
 }
