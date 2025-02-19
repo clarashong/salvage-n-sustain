@@ -41,7 +41,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    min-width: 70%; 
 }
 
 .posting {
@@ -94,4 +94,29 @@
     border-radius: 4px; 
     font-size: 10pt; 
     color: white; 
+}
+
+.sub-content {
+    display: flex; 
+    flex-direction: row;
+    gap: 20px; 
+    width: 80%; 
+}
+
+.post-sidebar {
+    display: flex; 
+    flex-direction: column;
+    gap: 10px; 
+    background-color: var(--primary); 
+    padding: 0.5rem;
+    border-radius: 10px;
+}
+
+.disposal-guide-block {
+    display: flex; 
+    flex-direction: column; 
+    background-color: var(--bg-secondary);
+    padding: 1rem;
+    width: 100%; 
+    border-radius: 10px; 
 }
