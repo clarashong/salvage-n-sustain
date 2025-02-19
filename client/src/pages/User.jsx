@@ -60,7 +60,11 @@ export function UserPage() {
                 {headers: headers}
             ); 
             const result = await response.json(); 
-            setUserPosts(result); 
+            if (response.ok) {
+                setUserPosts(result); 
+            } else {
+                setUserPosts([]); 
+            }
             console.log(result); 
         } catch (error) {
             console.log(error);
@@ -95,7 +99,11 @@ export function UserPage() {
     const signOutUser = async (event) => {
         event.preventDefault();
         const { error } = await supabase.auth.signOut(); 
-        if (error) console.error(error); 
+        if (error) {
+            console.error(error); 
+        } else {
+            setIsLoggedIn(false); 
+        }
     }
 
     const UserSideBar = () => {
