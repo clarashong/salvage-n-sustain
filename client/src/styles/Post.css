@@ -1,0 +1,38 @@
+.posting-page {
+    padding: 2rem; 
+    display:flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.posting-page-content {
+    display: flex; 
+    flex-direction: column; 
+    background-color: var(--bg-secondary);
+    padding: 1rem;
+    width: 80%; 
+    border-radius: 10px; 
+    overflow-y: auto;
+}
+
+.posting-page-title {
+    margin-bottom: 0;
+}
+
+.posting-page-h2 {
+    margin-bottom: 0; 
+}
+
+.posting-page-item {
+    margin-top: 0.5rem;
+}
+
+.posting-page-image {
+    max-width: 200px; 
+    margin-top: 0.5rem; 
+}
+
+.posting-page-date {
+    font-weight: bold;
+}

@@ -92,7 +92,7 @@ export function SignUpPage({nextPage='/'}) {
      */
     const signUpUser = async (event) => {
         event.preventDefault(); 
-        if (password != confirmPass) {
+        if (password !== confirmPass) {
             console.error("Passwords don't match"); 
             setErrorMsg("Passwords don't match"); 
             return; 

@@ -1,7 +1,7 @@
 import '../styles/Posts.css'; 
 import { Posting } from '../components/Posting';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 /**
@@ -123,10 +123,8 @@ export function PostPage () {
 
         if (page === pages.POSTINGS) {
             fetchPosts(); 
-            console.log(postList); 
         } else {
             fetchGuide(); 
-            console.log(guide); 
         }
     }, [item, pageNumber, page, userLocation]); 
     
@@ -134,10 +132,12 @@ export function PostPage () {
         console.log('Updated postList:', postList);
     }, [postList]);
 
-    
     const renderPosting = () => {
         if (!postList.length) return (<p>No posts match your search</p>); 
-        return postList.map((post, index) => (<Posting postContent={post} key={index}></Posting>)); 
+        return postList.map((post, index) => (
+            <Posting 
+                postContent={post} 
+                key={index}></Posting>)); 
     }
 
     const renderContent = () => {
@@ -168,6 +168,14 @@ export function PostPage () {
         if (loading) {
             return (
                 <div className="post-page-content">
+                    <div>
+                        <SearchBar 
+                            value={item}
+                            onChange={(e) => setCurrItem(e.target.value)}
+                            onSearch={search}
+                            onKeyDown={handleEnter}>
+                        </SearchBar>
+                    </div>
                     <div className="sub-content">
                         <div className="post-sidebar">
                             <button
@@ -188,7 +196,7 @@ export function PostPage () {
             <div className="post-page-content">
                 <div>
                     <SearchBar 
-                        value={currItem}
+                        item={currItem}
                         onChange={(e) => setCurrItem(e.target.value)}
                         onSearch={search}
                         onKeyDown={handleEnter}>
