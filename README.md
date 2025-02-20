@@ -8,7 +8,7 @@ A big environmental problem is excessive waste generation that fills up landfill
 # Purpose
 The site works to reduce the waste caused by consumption culture as well as promote resource sharing and eco-friendly initiatives. 
 
-# Build with  
+# Built with  
 - React (frontend) 
 - Express.js (backend) 
 - Supabase (database and authentication)
@@ -39,11 +39,11 @@ Prerequisites:
 3. Fill in env variables for Supabase
 - In client folder 
   - create a blank .env.local file 
-  - fill it in based on .env.local.example
-'''
+  - fill it in based on .env.local.example  
+```
     REACT_APP_SUPABASE_URL="project-url-here"
     REACT_APP_SUPABASE_ANON_KEY="anon-key-here"
-'''
+```
 - In server folder 
   - create a blank .env file 
   - fill it in based on .env.example
