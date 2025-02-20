@@ -40,9 +40,18 @@ Prerequisites:
 - In client folder 
   - create a blank .env.local file 
   - fill it in based on .env.local.example
+'''
+    REACT_APP_SUPABASE_URL="project-url-here"
+    REACT_APP_SUPABASE_ANON_KEY="anon-key-here"
+'''
 - In server folder 
   - create a blank .env file 
   - fill it in based on .env.example
+```
+    SUPABASE_URL="project-url-here"
+    SUPABASE_ANON_KEY="anon-key-here"
+    GEMINI_API_KEY="your-key-here"
+```
 
 # Running the application
 1. In the project folder use command to start the client and server:  
