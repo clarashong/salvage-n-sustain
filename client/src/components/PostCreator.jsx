@@ -19,10 +19,8 @@ export const PostCreator = () => {
      * @returns {void}
      */
     const createPost = async () => {
-        console.log('Creating post'); 
         const { data: { user }, error} = await supabase.auth.getUser(); 
         // there is no user logged into client
-        console.log(user); 
         if (!user) {
             throw new Error("No active user session"); 
         }
@@ -30,17 +28,19 @@ export const PostCreator = () => {
         if (error) {
             throw new Error(error.message); 
         }
+        let formattedItems = items.split(',').map(item => item.trim());
+
+
         let post = {
             title: title,
             user_id: user.id,
             user_name: user.user_metadata.name,
             description: description, 
-            items: items
+            items: formattedItems
         };
         if (startDate) post.start_date = new Date (startDate + "T00:00:00"); 
         if (endDate) post.end_date = new Date (endDate + "T23:59:59"); 
 
-        console.log(post); 
         const {insertData, insertError} = await supabase
             .from('posts')
             .insert([post]);
@@ -94,7 +94,7 @@ export const PostCreator = () => {
                         type="text"
                         placeholder=""
                         value={items}
-                        onChange={(e) => setItems(e.target.value.split(',').map((i) => (i.trim())))}
+                        onChange={(e) => setItems(e.target.value)}
                     >    
                     </input>
                     <p>Start Date</p>

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const supabase = require('../data/supabaseClient'); 
+const supabase = require('../utils/supabaseClient'); 
 
 // logs the method being called and the url
 const logger = (req, res, next) => {

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router(); 
-const supabase = require('../data/supabaseClient'); 
+const supabase = require('../utils/supabaseClient'); 
+const model = require('../utils/geminiModel'); 
 
 /**
  *  @swagger
@@ -84,7 +85,7 @@ router.use(errorMiddleware);
  *           default: 1
  *         description: Page number for pagination
  *     responses:
- *       200:
+ *       201:
  *         description: List of posts
  *         content:
  *           application/json:
@@ -119,7 +120,6 @@ router.get('/search', logger, errorMiddleware, async (req, res, next) => {
         search,
         page
     } = req.query; 
-    console.log(search); 
 
     if (!search) {
         // select all posts 
@@ -145,5 +145,32 @@ router.get('/search', logger, errorMiddleware, async (req, res, next) => {
         res.status(201).json(posts);
     }
 }); 
+
+/**
+ * @swagger
+ * /guide:
+ *      get: 
+ *          summary: get a recycling/disposal guide 
+ */
+router.get('/guide', logger, errorMiddleware, async (req, res, next) => {
+    const {
+        item,
+        location
+    } = req.query; 
+    if (!item) {
+        res.status(201).json({"guide": "No item in search."})
+    } else {
+        const prompt = `Write a brief, easy-to-read guide (less than 300 words) on how to dispose/recycle ${item} in ${location}`;
+        try {
+            const result = await model.generateContent(prompt); 
+            res.status(201).json({"guide": result}); 
+        } catch (error) {
+            const newError = new Error(error.message); 
+            newError.status = 400; 
+            next(newError); 
+            return;
+        }
+    }
+});
 
 module.exports = router; 

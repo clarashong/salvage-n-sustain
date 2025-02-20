@@ -1,5 +1,6 @@
 import '../styles/index.css'; 
 import postImage from '../assets/postImage.png';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * A item bubble element
@@ -23,27 +24,29 @@ const Item = ({name, index}) => {
  */
 export const Posting = ({postContent}) => {
     const maxLength = 50;  
+    const navigate = useNavigate(); 
 
-    const id = postContent.id || postContent.post_id; 
     const title = postContent.title || postContent.post_title; 
     let description = postContent.description || postContent.post_description; 
     const items = postContent.items || postContent.post_items; 
-    const start_date = postContent.start_date || postContent.post_start_date; 
-    const end_date = postContent.end_date || postContent.post_end_date; 
-    const location = postContent.location || postContent.post_location; 
     const user_name = postContent.user_name || postContent.post_user_name; 
 
     if (description.length > maxLength) {
         description = description.substring(0, maxLength) + "..."; 
     }
 
+    const goToPostingPage = () => {
+        console.log("clicked"); 
+        navigate('/post', {state: {postContent: postContent}}); 
+    }
+
     return (
-        <div className="posting"> 
+        <div className="posting" onClick={goToPostingPage}> 
             <img className="post-image" src={postImage}></img>
             <div className="posting-details">
-                <span className="posting-title">{title}</span>
-                <span className="posting-username">{user_name}</span>
-                <span className="posting-description">{description}</span> 
+                <span key="title" className="posting-title">{title}</span>
+                <span key="user" className="posting-username">{user_name}</span>
+                <span key="desc" className="posting-description">{description}</span> 
                 <div className="posting-item-list">
                     {items.map((name, index) => 
                     <Item name={name} index={index}></Item>)}
