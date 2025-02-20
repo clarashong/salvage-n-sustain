@@ -6,8 +6,8 @@ const port = 3001;
 const postsRoute =  require('./routes/posts')
 const userRoute =  require('./routes/user')
 
-app.use('/user', userRoute); 
-app.use('/posts', postsRoute);
+app.use('/api/user', userRoute); 
+app.use('/api/posts', postsRoute);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

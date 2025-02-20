@@ -42,7 +42,7 @@ export const Posting = ({postContent}) => {
 
     return (
         <div className="posting" onClick={goToPostingPage}> 
-            <img className="post-image" src={postImage}></img>
+            <img className="post-image" alt="post" src={postImage}></img>
             <div className="posting-details">
                 <span key="title" className="posting-title">{title}</span>
                 <span key="user" className="posting-username">{user_name}</span>

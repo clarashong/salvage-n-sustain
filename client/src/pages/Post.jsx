@@ -35,7 +35,7 @@ export function Post() {
                 <h1 className="posting-page-title">{title}</h1>
                 <h2 className="posting-page-h2">By: {user_name}</h2>
                 <p>From: <span className="posting-page-date">{start_date.substring(0,10)}</span> to <span className="posting-page-date">{end_date.substring(0, 10)} </span></p>
-                <img className="posting-page-image" src={postImage}></img>
+                <img className="posting-page-image" alt="posting page" src={postImage}></img>
                 <h2 className="posting-page-h2">Description</h2>
                 <p>{description}</p>
                 <h2 className="posting-page-h2">Accepted Items</h2>

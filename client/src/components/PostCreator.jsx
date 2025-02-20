@@ -41,12 +41,12 @@ export const PostCreator = () => {
         if (startDate) post.start_date = new Date (startDate + "T00:00:00"); 
         if (endDate) post.end_date = new Date (endDate + "T23:59:59"); 
 
-        const {insertData, insertError} = await supabase
+        const result = await supabase
             .from('posts')
             .insert([post]);
-        if (insertError) {
-            console.log(insertError); 
-            throw new Error(insertError.message); 
+        if (result.error) {
+            console.log(result.error); 
+            throw new Error(result.error.message); 
         } 
     }; 
     

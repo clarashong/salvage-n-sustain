@@ -56,7 +56,7 @@ export function UserPage() {
         }; 
         
         try {
-            const response = await fetch ('/user/myPosts', 
+            const response = await fetch ('/api/user/myPosts', 
                 {headers: headers}
             ); 
             const result = await response.json(); 

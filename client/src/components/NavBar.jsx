@@ -17,6 +17,7 @@ export function NavBar() {
                 <Link to="/">
                     <img 
                         className="logo"
+                        alt = "logo"
                         src={logo}>
                     </img>
                 </Link>
@@ -25,11 +26,11 @@ export function NavBar() {
             <ul className="navlist">
                 <Link className="navitem" to="/posts">
                     <span className="link-title">Search Postings</span> 
-                    <img className="icon" src={searchIcon}></img>
+                    <img className="icon" alt="search icon" src={searchIcon}></img>
                 </Link>
                 <Link className="navitem" to="/user">
                     <span className="link-title">Profile</span>
-                    <img className="icon" src={profileIcon}></img>
+                    <img className="icon" alt="profile icon" src={profileIcon}></img>
                 </Link>
             </ul>   
         </div>

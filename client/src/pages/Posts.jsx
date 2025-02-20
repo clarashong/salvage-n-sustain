@@ -1,7 +1,7 @@
 import '../styles/Posts.css'; 
 import { Posting } from '../components/Posting';
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
 /**
@@ -35,10 +35,9 @@ export function PostPage () {
     const searchItem = location.state?.searchItem;
     const pages = {POSTINGS: 'Postings', GUIDE: 'Disposal Guide'}; 
 
-    const [currItem, setCurrItem] = useState(''); 
+    const [currItem, setCurrItem] = useState(searchItem ? searchItem : ''); 
     const [item, setItem] = useState(searchItem ? searchItem : ''); 
     const [postList, setPostList] = useState([]);  // list of objects (posts)
-    const [pageNumber, setPageNumber] = useState(1); 
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(pages.POSTINGS);  
     const [guide, setGuide] = useState(''); 
@@ -70,9 +69,9 @@ export function PostPage () {
             setLoading(true); 
             const params = new URLSearchParams();
             params.append('search', item);
-            params.append('page', pageNumber);
+            params.append('page', 1);
             let json = []; 
-            const url = `/posts/search?${params.toString()}`;
+            const url = `/api/posts/search?${params.toString()}`;
             try {
               const response = await fetch(url);
               json = await response.json();
@@ -91,7 +90,7 @@ export function PostPage () {
             const params = new URLSearchParams();
             params.append('item', item);
             params.append('location', userLocation);
-            const url = `/posts/guide?${params.toString()}`; 
+            const url = `/api/posts/guide?${params.toString()}`; 
             let json = {}
             let responseGuide = ''; 
             try {
@@ -126,7 +125,7 @@ export function PostPage () {
         } else {
             fetchGuide(); 
         }
-    }, [item, pageNumber, page, userLocation]); 
+    }, [item, page, pages.POSTINGS, userLocation]); 
     
     useEffect(() => {
         console.log('Updated postList:', postList);
