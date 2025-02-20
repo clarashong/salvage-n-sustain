@@ -79,5 +79,3 @@ var/
 .cache/
 .pytest_cache/
 .eslintcache
-
-*vercel.json
