@@ -1,6 +1,7 @@
 {
   "name": "salvage-n-sustain",
   "version": "1.0.0",
+  "proxy": "http://localhost:3001",
   "description": "Posting board for eco-friendly initiatives and events",
   "main": "index.js",
   "scripts": {
