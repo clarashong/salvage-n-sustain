@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 
+const backendURL = "https://salvage-n-sustain-backend.vercel.app"; 
+
 /**
  * A simple search bar 
  * @component
@@ -71,7 +73,7 @@ export function PostPage () {
             params.append('search', item);
             params.append('page', 1);
             let json = []; 
-            const url = `/api/posts/search?${params.toString()}`;
+            const url = backendURL + `/api/posts/search?${params.toString()}`;
             try {
               const response = await fetch(url);
               json = await response.json();
@@ -90,7 +92,7 @@ export function PostPage () {
             const params = new URLSearchParams();
             params.append('item', item);
             params.append('location', userLocation);
-            const url = `/api/posts/guide?${params.toString()}`; 
+            const url = backendURL + `/api/posts/guide?${params.toString()}`; 
             let json = {}
             let responseGuide = ''; 
             try {

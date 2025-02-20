@@ -5,6 +5,8 @@ import { PostCreator } from '../components/PostCreator';
 import supabase from '../data/supabaseClient' 
 import { useState, useEffect } from 'react';
 
+const backendURL = "https://salvage-n-sustain-backend.vercel.app"; 
+
 /**
  * 
  * @param {object} props 
@@ -56,7 +58,7 @@ export function UserPage() {
         }; 
         
         try {
-            const response = await fetch ('/api/user/myPosts', 
+            const response = await fetch (backendURL + '/api/user/myPosts', 
                 {headers: headers}
             ); 
             const result = await response.json(); 
