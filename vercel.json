@@ -15,12 +15,9 @@
     ],
     "routes": [
       {
-        "src": "/posts/(.*)",
-        "dest": "server/server.js"
-      },
-      {
-        "src": "/user/(.*)",
+        "src": "/(.*)",
         "dest": "server/server.js"
       }
-    ]
+    ],
+    "buildCommand" : "npm install --prefix server && npm install --prefix client && npm run build --prefix client"
   }
