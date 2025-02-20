@@ -20,7 +20,7 @@ export function NavBar() {
                         src={logo}>
                     </img>
                 </Link>
-                <span className="navname">Salvage 'N Sustain</span>
+                <span className="navname">Salvage 'N' Sustain</span>
             </div>
             <ul className="navlist">
                 <Link className="navitem" to="/posts">
