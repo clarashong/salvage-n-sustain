@@ -9,6 +9,10 @@ const userRoute =  require('./routes/user')
 app.use('/api/user', userRoute); 
 app.use('/api/posts', postsRoute);
 
+app.get("/", (req, res) => { 
+  res.send("Hello from express"); 
+});
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
