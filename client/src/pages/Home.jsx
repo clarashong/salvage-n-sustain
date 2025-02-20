@@ -45,7 +45,7 @@ export function HomePage() {
                         onClick={search}>
                         Search
                     </button>
-                    <img className="box-image" alt="box image" src={boxImage}></img>
+                    <img className="box-image" alt="box" src={boxImage}></img>
                 </div>
             </div>
         </div>
