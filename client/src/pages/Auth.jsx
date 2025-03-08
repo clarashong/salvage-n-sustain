@@ -99,7 +99,7 @@ export function SignUpPage({nextPage='/'}) {
         } else if (password.length < 8) {
             setErrorMsg("Passwords must be at least 8 characters"); 
             return; 
-        } else if (!email.contains( "@")) {
+        } else if (!email.includes( "@")) {
             setErrorMsg("Must use valid email"); 
         } else {
             setErrorMsg(''); 
