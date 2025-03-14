@@ -16,7 +16,8 @@ The site works to reduce the waste caused by consumption culture as well as prom
 - Vercel (deployment)
 
 # Demo 
-This project is deployed on Vercel. Access the site here: https://salvage-n-sustain-frontend.vercel.app/  
+**Note:** As of March 13, this project is now taken off of Vercel deployment to save resources.  
+This project is deployed on Vercel. Access the site here: https://salvage-n-sustain-frontend.vercel.app/  (now disabled)
 Because of API limits, please be mindful of the number of "disposal guide" searches. Supabase RLS is enabled for the public for data protection.
 
 # Getting keys and variables
